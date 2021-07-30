@@ -100,6 +100,7 @@ DATABASES = {
             'PASSWORD': os.getenv('DB_PASSWORD'),
             'HOST': os.getenv('DB_HOST'),
             'PORT': os.getenv('DB_PORT'),
+    }
  }
 
 prod_db = dj_database_url.config(conn_max_age=500)

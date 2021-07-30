@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="container mb-2">
+    <h4 class="text text-center text-info pb-4">All our Weekly Services</h4>
+    <div class="row ">
+        {% if services %}
+        {% for service in services %}
+        <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+            <div class="card text-white bg-info h-100 p-4">
+                <img src="{% static 'assets/images/blog/banner.jpg' %}" class="card-img-top" alt="{{service.name}}">
+                <div class="card-body">
+                    <h5 class="text text-center">{{service.name}}</h5>
+                </div>
+                <ul class="list-group ">
+                    <li class="list-group-item">
+                        <h4>{{service.date}}</h4>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'view_service' pk=service.pk %}">View Service</a>
+                    </li>
+                    {% if user.is_worker %}
+                    <li class="list-group-item"><a href="{% url 'view_gallery' pk=service.pk %}">View Gallery</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="row justify-content-md-center">
+            <div class="col-md-6 mt-5">
+
+                <img src="{% static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if services %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if services.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ services.previous_page_number }}">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {% endif %}
+
+            {% if services.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ services.number|add:'-5' }}">&hellip;</a></li>
+            {% endif %}
+
+            {% for i in services.paginator.page_range %}
+            {% if services.number == i %}
+            <li class="page-item " aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only"></span>
+              </span>
+            </li>
+            {% elif i > services.number|add:'-5' and i < services.number|add:'5' %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if services.paginator.num_pages > services.number|add:'4' %}
+            <li class="page-item"><a class="page-link" href="?page={{ services.number|add:'5' }}">&hellip;</a></li>
+            {% endif %}
+
+            {% if services.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ services.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+
+{% endblock %}

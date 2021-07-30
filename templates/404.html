@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="container mb-2">
+    <h4 class="text text-left text-info pb-4">
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                >Add Image</button>
+    </h4>
+    <div class="row justify-content-md-center">
+        <div class="col-md-6 mt-5">
+            <picture>
+                <source srcset="{% static 'assets/images/blog/404.jpg' %}"
+                        media="(min-width: 800px)">
+                <img src="{% static 'assets/images/blog/404.jpg' %}" height="250" width="500" alt=""/>
+            </picture>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info">Send message</button>
+      </div>
+    </div>
+  </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

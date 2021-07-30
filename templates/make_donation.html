@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-6 mt-5">
+
+            <form method="post" action="{% url 'make_donation' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="donation_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="donation_name" name="first_name">
+                </div>
+                <div class="mb-3">
+                    <label for="donation_last_name" class="form-label">Last Name</label>
+                    <input type="text" name="last_name" class="form-control" id="donation_last_name">
+                </div>
+                <div class="mb-3">
+                    <label for="donation_phone" class="form-label">Telephone E.g +2347081234567</label>
+                    <input type="tel" name="telephone" class="form-control" id="donation_phone">
+                </div>
+                <div class="mb-3">
+                    <label for="donation_amount" class="form-label">Amount</label>
+                    <input type="number" name="amount" class="form-control" id="donation_amount">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

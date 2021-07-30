@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    {% for service in services %}
+    <div class="card text-white bg-primary" style="width: 18rem;">
+        <img src="{% static 'assets/images/blog/banner.jpg' %}" class="card-img-top" alt="{{service.name}}">
+        <div class="card-body">
+            <h5 class="text text-center">{{service.name}}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><div class="d-flex"><a href="{% url 'view_service' pk=service.pk %}">View Service</a></div></li>
+            <li class="list-group-item"><a href="#">View Announcement</a>{% if user.is_authenticated and user.is_worker %}|||<a href="#">Add Announcement</a>{% endif %}</li>
+            <li class="list-group-item"><a href="{% url 'view_gallery' pk=service.pk %}">View Gallery</a>{% if user.is_authenticated and user.is_worker %}|||<a href="#">Add Image</a>{% endif %}</li>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

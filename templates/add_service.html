@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-6 mt-5">
+
+            <form method="post" action="{% url 'create_service' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="date" class="form-label">Service Date</label>
+                    <input type="date" class="form-control" id="date" name="date" min="2020-01-01" max="2022-12-31">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Type of Server</label>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                            id="exampleInputEmail1" name="name">
+                        <option selected>Select Service Type</option>
+                        <option value="Sunday ThanksGiving Service">Sunday ThanksGiving Service</option>
+                        <option value="Sunday Service">Sunday Service</option>
+                        <option value="Sunday Special Service">Sunday Special Service</option>
+                        <option value="Tuesday Bible Study">Tuesday Bible Study</option>
+                        <option value="Thursday Revival Service">Thursday Revival Service</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Announcement</label>
+                    <textarea class="form-control" name="announcement" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="video" class="form-label">Video Service</label>
+                    <input type="file" class="form-control" id="video" name="video" accept="video/*">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

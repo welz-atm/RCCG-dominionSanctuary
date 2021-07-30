@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-6 mt-5">
+
+            <form method="post" action="{% url 'pay_tithe' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="tithe_month" class="form-label">Month</label>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                            id="tithe_month" name="month">
+                        <option selected>Select Month</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tithe_amount" class="form-label">Amount</label>
+                    <input type="number" name="amount" class="form-control" id="tithe_amount">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

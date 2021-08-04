@@ -15,11 +15,4 @@ urlpatterns = [
     path('tithes/', views.all_tithes, name='all_tithes'),
     path('confirm_donation/', views.confirm_donation, name='confirm_donation'),
     path('search/', views.search_view, name='search'),
-    path('register_user/', views.view_per_thursday, name='register_user'),
-    path('register_user/', views.view_per_thursday, name='register_user'),
-    path('register_user/', views.view_per_tuesday, name='register_user'),
-    path('register_user/', views.view_per_sunday, name='register_user'),
-    path('register_user/', views.add_comment_to_service, name='register_user'),
-    path('register_user/', views.edit_comment, name='register_user'),
-    path('register_user/', views.view_per_sunday, name='register_user'),
 ]

@@ -17,14 +17,14 @@ class Service(models.Model):
     name = models.CharField(max_length=255, choices=SERVICE_TYPES)
     announcement = models.TextField(max_length=255, default='Bible Study')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    video = models.FileField()
+    video = models.FileField(upload_to='media/')
 
     def __str__(self):
         return self.name
 
 
 class Photo(models.Model):
-    image = models.FileField()
+    image = models.FileField(upload_to='media/')
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
 

@@ -160,7 +160,6 @@ AWS_S3_CUSTOM_DOMAIN = os.getenv('MEDIA_URL')
 AWS_LOCATION = 'media'
 
 MEDIA_URL = os.getenv('MEDIA_URL')
-# MEDIA_ROOT = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 # MEDIA_URL = 'media/'
 # MEDIA_ROOT = 'media/'

@@ -9,7 +9,7 @@ from paystackapi.paystack import Paystack
 
 
 def home(request):
-    services = Service.objects.all().order_by('date')[:6]
+    services = Service.objects.all().order_by('-date')[:6]
     if services.exists():
         context = {
             'services': services
@@ -22,7 +22,7 @@ def home(request):
 def search_view(request):
     search_query = request.GET.get('search')
     if search_query is not None:
-        qs = Service.objects.filter(name__contains=search_query)
+        qs = Service.objects.filter(name__contains=search_query).order_by('-date')
         paginator = Paginator(qs, 10)
         page_number = request.GET.get('page')
         qs = paginator.get_page(page_number)
@@ -103,7 +103,7 @@ def view_service(request, pk):
 
 
 def all_services(request):
-    services = Service.objects.all().order_by('date')
+    services = Service.objects.all().order_by('-date')
     paginator = Paginator(services, 10)
     page_number = request.GET.get('page')
     services = paginator.get_page(page_number)
@@ -125,7 +125,7 @@ def view_gallery(request, pk):
 
 @login_required()
 def view_per_sunday(request):
-    services = Service.objects.filter(name='Sunday Service').order_by('date')
+    services = Service.objects.filter(name='Sunday Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 10)
         page_number = request.GET.get('page')
@@ -140,7 +140,7 @@ def view_per_sunday(request):
 
 @login_required()
 def view_per_sunday_special_service(request):
-    services = Service.objects.filter(name='Sunday Special Service').order_by('date')
+    services = Service.objects.filter(name='Sunday Special Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 10)
         page_number = request.GET.get('page')
@@ -155,7 +155,7 @@ def view_per_sunday_special_service(request):
 
 @login_required()
 def view_per_sunday_thanksgiving_service(request):
-    services = Service.objects.filter(name='Sunday ThanksGiving Service').order_by('date')
+    services = Service.objects.filter(name='Sunday ThanksGiving Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 10)
         page_number = request.GET.get('page')
@@ -170,7 +170,7 @@ def view_per_sunday_thanksgiving_service(request):
 
 @login_required()
 def view_per_tuesday(request):
-    services = Service.objects.filter(name='Tuesday Bible Study').order_by('date')
+    services = Service.objects.filter(name='Tuesday Bible Study').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 10)
         page_number = request.GET.get('page')
@@ -185,7 +185,7 @@ def view_per_tuesday(request):
 
 @login_required()
 def view_per_thursday(request):
-    services = Service.objects.filter(name='Thursday Revival Service').order_by('date')
+    services = Service.objects.filter(name='Thursday Revival Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 10)
         page_number = request.GET.get('page')
@@ -246,7 +246,7 @@ def pay_tithe(request):
 
 @login_required()
 def confirm_tithe(request):
-    tithes = Tithe.objects.filter(user=request.user).order_by('date')
+    tithes = Tithe.objects.filter(user=request.user).order_by('-date')
     tithe = tithes[0]
     paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
     response = paystack.transaction.verify(reference=tithe.reference)

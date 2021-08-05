@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import CustomUser
 from phonenumber_field.modelfields import PhoneNumberField
+from cloudinary_storage.storage import VideoMediaCloudinaryStorage, MediaCloudinaryStorage
 
 SERVICE_TYPES = [('Sunday ThanksGiving Service', 'Sunday ThanksGiving Service'),
                  ('Sunday Service', 'Sunday Service'), ('Sunday Special Service', 'Sunday Special Service'),
@@ -16,15 +17,15 @@ class Service(models.Model):
     date = models.DateField()
     name = models.CharField(max_length=255, choices=SERVICE_TYPES)
     announcement = models.TextField(max_length=255, default='Bible Study')
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    video = models.FileField(upload_to='media')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)    
+    video = models.FileField(upload_to='videos/', blank=True, storage=VideoMediaCloudinaryStorage(),)
 
     def __str__(self):
         return self.name
 
 
 class Photo(models.Model):
-    image = models.FileField(upload_to='media')
+    image = models.ImageField(upload_to='pictures/', storage=MediaCloudinaryStorage())
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
 

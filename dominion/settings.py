@@ -156,14 +156,15 @@ AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.eu-central-1.wasabisys.com' % str(AWS_STORAGE_BUCKET_NAME)
+AWS_S3_CUSTOM_DOMAIN = os.getenv('MEDIA_URL')
 AWS_LOCATION = 'media'
 
-MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+MEDIA_URL = os.getenv('MEDIA_URL')
 # MEDIA_ROOT = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 # MEDIA_URL = 'media/'
-MEDIA_ROOT = 'media/'
+# MEDIA_ROOT = 'media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 LOGIN_URL = reverse_lazy('login')

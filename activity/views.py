@@ -244,7 +244,7 @@ def pay_tithe(request):
     return render(request, 'pay_tithe.html', context)
     
     
- @login_required()
+@login_required()
 def test_pay_tithes(request):
     amount = request.POST["amount"]
     month = request.POST["month"]

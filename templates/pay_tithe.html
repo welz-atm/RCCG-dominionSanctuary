@@ -6,7 +6,7 @@
     <div class="row justify-content-md-center">
         <div class="col-md-6 mt-5">
 
-            <form method="post" action="{% url 'pay_tithe' %}">
+            <form method="post" action="{% url 'pay_tithes' %}">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="tithe_month" class="form-label">Month</label>

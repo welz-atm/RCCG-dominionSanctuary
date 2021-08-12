@@ -242,6 +242,24 @@ def pay_tithe(request):
         'form': form
     }
     return render(request, 'pay_tithe.html', context)
+    
+    
+ @login_required()
+def test_pay_tithes(request):
+    amount = request.POST["amount"]
+    month = request.POST["month"]
+    total = amount * 100
+    paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
+    response = paystack.transaction.initialize(amount=total, email=request.user.email,
+                                           callback_url='http://localhost:8000/confirm_tithe/')
+    url = response['data']['authorization_url']
+    reference = response['data']['reference']
+    tithe = Tithe(user=request.user)
+    tithe.amount = total
+    tithe.reference = reference
+    tithe.month = month
+    tithe.save()
+    return redirect(url)
 
 
 @login_required()

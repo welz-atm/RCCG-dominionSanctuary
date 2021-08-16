@@ -168,4 +168,4 @@ LOGIN_URL = reverse_lazy('login')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
+PAYSTACK_SECRET_KEY = 'pk_test_dee04d65217df99ed1d4a30ca23e0393cf8f2c47'

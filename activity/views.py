@@ -6,6 +6,7 @@ from authentication.decorators import worker_login_required, member_login_requir
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from paystackapi.paystack import Paystack
+import json
 
 
 def home(request):
@@ -250,8 +251,9 @@ def test_pay_tithes(request):
     month = request.POST["month"]
     total = amount * 100
     paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
-    response = paystack.transaction.initialize(amount=total, email=request.user.email,
+    test_response = paystack.transaction.initialize(amount=total, email=request.user.email,
                                            callback_url='http://localhost:8000/confirm_tithe/')
+    response = json.load(test_response)
     url = response['data']['authorization_url']
     reference = response['data']['reference']
     tithe = Tithe(user=request.user)

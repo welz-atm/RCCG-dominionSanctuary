@@ -253,7 +253,7 @@ def test_pay_tithes(request):
     paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
     test_response = paystack.transaction.initialize(amount=total, email=request.user.email,
                                            callback_url='http://localhost:8000/confirm_tithe/')
-    response = json.load(test_response)
+    response = json.loads(test_response)
     url = response['data']['authorization_url']
     reference = response['data']['reference']
     tithe = Tithe(user=request.user)

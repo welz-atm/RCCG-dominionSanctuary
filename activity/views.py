@@ -247,7 +247,7 @@ def pay_tithe(request):
 @login_required()
 def confirm_tithe(request):
     tithe_url = request.build_absolute_uri()
-    reference = tithe_url('=')[2]
+    reference = tithe_url.split('=')[2]
     paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
     response = paystack.transaction.verify(reference=reference)
     tithes = Tithe.objects.filter(user=request.user).order_by('-date')

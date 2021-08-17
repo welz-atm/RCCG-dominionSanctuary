@@ -25,9 +25,9 @@ def search_view(request):
         qs = Service.objects.filter(name__contains=search_query).order_by('-date')
         paginator = Paginator(qs, 10)
         page_number = request.GET.get('page')
-        qs = paginator.get_page(page_number)
+        services = paginator.get_page(page_number)
         context = {
-             'qs': qs
+             'services': services
           }
         return render(request, 'search.html', context)
 
@@ -242,32 +242,16 @@ def pay_tithe(request):
         'form': form
     }
     return render(request, 'pay_tithe.html', context)
-    
-    
-@login_required()
-def test_pay_tithes(request):
-    amount = request.POST["amount"]
-    month = request.POST["month"]
-    total = amount * 100
-    paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
-    response = paystack.transaction.initialize(amount=total, email=request.user.email,
-                                           callback_url='http://localhost:8000/confirm_tithe/')
-    url = response['data']['authorization_url']
-    reference = response['data']['reference']
-    tithe = Tithe(user=request.user)
-    tithe.amount = total
-    tithe.reference = reference
-    tithe.month = month
-    tithe.save()
-    return redirect(url)
 
 
 @login_required()
 def confirm_tithe(request):
+    tithe_url = request.build_absolute_uri()
+    reference = tithe_url('=')[2]
+    paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
+    response = paystack.transaction.verify(reference=reference)
     tithes = Tithe.objects.filter(user=request.user).order_by('-date')
     tithe = tithes[0]
-    paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
-    response = paystack.transaction.verify(reference=tithe.reference)
     tithe.transaction_date = response['data']['transaction_date']
     tithe.status = response['data']['status']
     tithe.save()
@@ -281,7 +265,7 @@ def confirm_tithe(request):
 
 
 def all_tithes(request):
-    tithes = Tithe.objects.all().order_by('date')
+    tithes = Tithe.objects.all().order_by('-date')
     paginator = Paginator(tithes, 10)
     page_number = request.GET.get('page')
     tithes = paginator.get_page(page_number)
@@ -310,7 +294,7 @@ def create_donation(request):
             amount = donation.amount * 100
             paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
             response = paystack.transaction.initialize(amount=amount, email=donation.email,
-                                                       callback_url='http://localhost:8000/confirm_donation/')
+                                                       callback_url='https://rccgdom.herokuapp.com/confirm_donation/')
             url = response['data']['authorization_url']
             reference = response['data']['reference']
             donation.reference = reference

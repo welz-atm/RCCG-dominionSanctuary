@@ -35,7 +35,7 @@ class Tithe(models.Model):
     month = models.CharField(max_length=15, choices=MONTHS)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     status = models.CharField(max_length=15, null=True, blank=True)
-    transaction_date = models.CharField(max_length=15, null=True, blank=True)
+    transaction_date = models.CharField(max_length=35, null=True, blank=True)
     reference = models.CharField(max_length=15)
 
     def __int__(self):
@@ -49,7 +49,7 @@ class Donation(models.Model):
     last_name = models.CharField(max_length=25)
     email = models.EmailField(verbose_name='email address', max_length=255, default='temi@temitopesolesi.com.ng')
     status = models.CharField(max_length=15, null=True, blank=True)
-    transaction_date = models.CharField(max_length=15, null=True, blank=True)
+    transaction_date = models.CharField(max_length=35, null=True, blank=True)
     telephone = PhoneNumberField(null=True, unique=True, help_text='E.g. +234 803 123 4567')
     reference = models.CharField(max_length=15)
 

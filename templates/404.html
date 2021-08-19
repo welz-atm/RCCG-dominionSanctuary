@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-{% load cloudinary_static %}
+{% load static %}
 
 
 <div class="container mb-2">
@@ -11,9 +11,9 @@
     <div class="row justify-content-md-center">
         <div class="col-md-6 mt-5">
             <picture>
-                <source srcset="{% cloudinary_static 'assets/images/blog/404.jpg' %}"
+                <source srcset="{% static 'assets/images/blog/404.jpg' %}"
                         media="(min-width: 800px)">
-                <img src="{% cloudinary_static 'assets/images/blog/404.jpg' %}" height="250" width="500" alt=""/>
+                <img src="{% static 'assets/images/blog/404.jpg' %}" height="250" width="500" alt=""/>
             </picture>
         </div>
     </div>

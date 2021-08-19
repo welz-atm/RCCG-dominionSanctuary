@@ -12,11 +12,11 @@
             <div class="card text-white h-100 p-4">
                 {% if service.name == 'Tuesday Bible Study' %}
                 <img src="{% static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% if service.name == 'Thursday Revival Service' %}
+				{% elif service.name == 'Thursday Revival Service' %}
                 <img src="{% static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% if service.name == 'Sunday ThanksGiving Service' %}
+				{% elif service.name == 'Sunday ThanksGiving Service' %}
                 <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% if service.name == 'Sunday Service' %}
+				{% elif service.name == 'Sunday Service' %}
                 <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% endif %}
                 <div class="card-body">

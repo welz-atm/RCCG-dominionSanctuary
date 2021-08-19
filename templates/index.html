@@ -1,5 +1,5 @@
 <!doctype html>
-{% load static %}
+{% load cloudinary_static %}
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -15,7 +15,7 @@
 <body style="background-color:#F9E6D6">
 <nav class="navbar navbar-expand-lg navbar-light bg-info">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'assets/images/blog/Rccg_logo.png' %}" height=70
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% cloudinary_static 'assets/images/blog/Rccg_logo.png' %}" height=70
                                               width=65
                                               alt=""></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -68,13 +68,13 @@
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{% static 'assets/images/blog/sundayservice.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% cloudinary_static 'assets/images/blog/sundayservice.jpg' %}" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="{% static 'assets/images/blog/BibleStudy.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% cloudinary_static 'assets/images/blog/BibleStudy.jpg' %}" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="{% static 'assets/images/blog/revival.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% cloudinary_static 'assets/images/blog/revival.jpg' %}" class="d-block w-100" alt="...">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -96,13 +96,13 @@
         <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
             <div class="card text-white h-100 p-4">
 				{% if service.name == 'Tuesday Bible Study' %}
-                <img src="{% static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% elif service.name == 'Thursday Revival Service' %}
-                <img src="{% static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% elif service.name == 'Sunday ThanksGiving Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% elif service.name == 'Sunday Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% endif %}
                 <div class="card-body">
                     <h5 class="text text-center">{{service.name}}</h5>
@@ -123,7 +123,7 @@
         <div class="row justify-content-md-center">
             <div class="col-md-6 mt-5">
 
-                <img src="{% static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
+                <img src="{% cloudinary_static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
             </div>
         </div>
         {% endif %}

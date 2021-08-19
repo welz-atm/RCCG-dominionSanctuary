@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-{% load static %}
+{% load cloudinary_static %}
 
 
 <div class="container mb-2">
@@ -11,13 +11,13 @@
         <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
             <div class="card text-white h-100 p-4">
                 {% if service.name == 'Tuesday Bible Study' %}
-                <img src="{% static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% elif service.name == 'Thursday Revival Service' %}
-                <img src="{% static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% elif service.name == 'Sunday ThanksGiving Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% elif service.name == 'Sunday Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
+                <img src="{% cloudinary_static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
 				{% endif %}
                 <div class="card-body">
                     <h5 class="text text-center">{{service.name}}</h5>
@@ -38,7 +38,7 @@
         <div class="row justify-content-md-center">
             <div class="col-md-6 mt-5">
 
-                <img src="{% static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
+                <img src="{% cloudinary_static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
             </div>
         </div>
         {% endif %}

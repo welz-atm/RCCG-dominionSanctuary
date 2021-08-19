@@ -15,8 +15,8 @@
 <body style="background-color:#F9E6D6">
 <nav class="navbar navbar-expand-lg navbar-light bg-info">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'assets/images/blog/Rccg_logo.png' %}" height=100
-                                              width=100
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'assets/images/blog/Rccg_logo.png' %}" height=70
+                                              width=65
                                               alt=""></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,8 @@
                 </li>
                 {% endif %}
             </ul>
-            <form class="d-flex">
+            <form class="d-flex" method="post" action="{% url 'search' %}">
+			{% csrf_token%}
                 <input class="form-control me-2" type="search" name="search_query" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -67,13 +68,13 @@
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{% static 'assets/images/blog/banner.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% static 'assets/images/blog/sundayservice.jpg' %}" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="{% static 'assets/images/blog/banner.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% static 'assets/images/blog/thursday.jpg' %}" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="{% static 'assets/images/blog/banner.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% static 'assets/images/blog/revival.jpg' %}" class="d-block w-100" alt="...">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -93,8 +94,16 @@
         {% if services %}
         {% for service in services %}
         <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
-            <div class="card text-white bg-info h-100 p-4">
-                <img src="{% static 'assets/images/blog/banner.jpg' %}" class="card-img-top" alt="{{service.name}}">
+            <div class="card text-white h-100 p-4">
+				{% if service.name == 'Tuesday Bible Study' %}
+                <img src="{% static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" alt="{{service.name}}">
+				{% if service.name == 'Thursday Revival Service' %}
+                <img src="{% static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" alt="{{service.name}}">
+				{% if service.name == 'Sunday ThanksGiving Service' %}
+                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" alt="{{service.name}}">
+				{% if service.name == 'Sunday Service' %}
+                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" alt="{{service.name}}">
+				{% endif %}
                 <div class="card-body">
                     <h5 class="text text-center">{{service.name}}</h5>
                 </div>
@@ -105,9 +114,7 @@
                     <li class="list-group-item">
                         <a href="{% url 'view_service' pk=service.pk %}">View Service</a>
                     </li>
-                    {% if user.is_worker %}
                     <li class="list-group-item"><a href="{% url 'view_gallery' pk=service.pk %}">View Gallery</a></li>
-                    {% endif %}
                 </ul>
             </div>
         </div>

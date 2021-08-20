@@ -16,7 +16,7 @@ MONTHS = [('January', 'January'), ('February', 'February'), ('March', 'March'),(
 class Service(models.Model):
     date = models.DateField()
     name = models.CharField(max_length=255, choices=SERVICE_TYPES)
-    announcement = models.TextField(max_length=255, default='Bible Study')
+    announcement = models.TextField(max_length=255)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)    
     video = models.FileField(upload_to='videos/', blank=True, storage=VideoMediaCloudinaryStorage(),)
 

@@ -18,7 +18,7 @@ class Service(models.Model):
     name = models.CharField(max_length=255, choices=SERVICE_TYPES)
     announcement = models.TextField(max_length=255)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)    
-    video = models.FileField(upload_to='videos/', blank=True, storage=VideoMediaCloudinaryStorage(),)
+    video = models.ImageFieldField(upload_to='videos/', blank=True, storage=VideoMediaCloudinaryStorage(),)
 
     def __str__(self):
         return self.name

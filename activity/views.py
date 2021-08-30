@@ -20,7 +20,7 @@ def home(request):
 
 
 def search_view(request):
-    search_query = request.GET.get('search')
+    search_query = request.GET.get('search_query')
     if search_query is not None:
         qs = Service.objects.filter(name__contains=search_query).order_by('-date')
         paginator = Paginator(qs, 10)

@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserEditForm, ChangePasswordForm
+from .decorators import pastor_login_required
 from django.contrib.auth.decorators import login_required
 
 
@@ -34,6 +35,7 @@ def register_user(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.is_member = True
             user.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('all_services')
@@ -42,6 +44,29 @@ def register_user(request):
         form = UserRegistrationForm()
     context = {'form': form}
     return render(request, 'register.html', context)
+
+
+def all_users(request):
+    if request.user.is_admin or request.user.is_pastor:
+        users = CustomUser.objects.all().exclude(pk=1).order_by('-date_created')
+        context = {
+            'users': users
+        }
+        return render(request, 'all_users.html', context)
+
+
+def register_worker(request):
+    if request.method == 'POST' and request.user.is_admin:
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            return redirect('all_users')
+
+    else:
+        form = UserRegistrationForm()
+    context = {'form': form}
+    return render(request, 'register_worker.html', context)
 
 
 def edit_user(request):

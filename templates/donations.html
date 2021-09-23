@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="container mb-2">
+    {% if donations %}
+        <table class="table table-responsive table-striped mb-5">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody class="card_color-bg">
+            {% for donation in donations %}
+            <tr>
+                <td>{{donation.date}}</td>
+                <td>{{donation.full_name}}</td>
+                <td>{{donation.email}}</td>
+                <td>₦{{donation.amount}}.00</td>
+                <td>{{donation.status}}</td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    {% else %}
+    <div class="row justify-content-md-center">
+            <div class="col-md-6 mt-5">
+
+                <img src="{% static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
+            </div>
+        </div>
+    {% endif %}
+
+     {% if donations %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if donations.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ donations.previous_page_number }}">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {% endif %}
+
+            {% if donations.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ donations.number|add:'-5' }}">&hellip;</a></li>
+            {% endif %}
+
+            {% for i in donations.paginator.page_range %}
+            {% if donations.number == i %}
+            <li class="page-item " aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only"></span>
+              </span>
+            </li>
+            {% elif i > donations.number|add:'-5' and i < donations.number|add:'5' %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if donations.paginator.num_pages > donations.number|add:'4' %}
+            <li class="page-item"><a class="page-link" href="?page={{ donations.number|add:'5' }}">&hellip;</a></li>
+            {% endif %}
+
+            {% if donations.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ donations.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+
+{% endblock %}

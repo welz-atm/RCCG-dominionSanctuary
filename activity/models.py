@@ -1,12 +1,13 @@
 from django.db import models
 from authentication.models import CustomUser
 from phonenumber_field.modelfields import PhoneNumberField
-from cloudinary_storage.storage import VideoMediaCloudinaryStorage, MediaCloudinaryStorage
+from cloudinary.models import CloudinaryField
+# from cloudinary_storage.storage import VideoMediaCloudinaryStorage, MediaCloudinaryStorage
 
 SERVICE_TYPES = [('Sunday ThanksGiving Service', 'Sunday ThanksGiving Service'),
-                 ('Sunday Service', 'Sunday Service'), ('Sunday Special Service', 'Sunday Special Service'),
-                 ('Tuesday Bible Study', 'Tuesday Bible Study'),
-                 ('Thursday Revival Service', 'Thursday Revival Service')]
+                 ('Sunday Service', 'Sunday Service'), ('Tuesday Bible Study', 'Tuesday Bible Study'),
+                 ('Thursday Revival Service', 'Thursday Revival Service'),
+                 ('Special Programme', 'Special Programme')]
 
 MONTHS = [('January', 'January'), ('February', 'February'), ('March', 'March'),('April', 'April'), ('May', 'May'),
           ('June', 'June'), ('July', 'July'), ('August', 'August'), ('September', 'September'), ('October', 'October'),
@@ -16,16 +17,17 @@ MONTHS = [('January', 'January'), ('February', 'February'), ('March', 'March'),(
 class Service(models.Model):
     date = models.DateField()
     name = models.CharField(max_length=255, choices=SERVICE_TYPES)
-    announcement = models.TextField(max_length=255)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)    
-    video = models.FileField(upload_to='videos/', blank=True, storage=VideoMediaCloudinaryStorage(),)
+    announcement = models.TextField(max_length=255, default='Bible Study')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    video = CloudinaryField(resource_type='video')
+    # worship = CloudinaryField(resource_type='video', null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
 class Photo(models.Model):
-    image = models.ImageField(upload_to='pictures/', storage=MediaCloudinaryStorage())
+    image = CloudinaryField('image')
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
 
@@ -35,7 +37,7 @@ class Tithe(models.Model):
     month = models.CharField(max_length=15, choices=MONTHS)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     status = models.CharField(max_length=15, null=True, blank=True)
-    transaction_date = models.CharField(max_length=35, null=True, blank=True)
+    transaction_date = models.CharField(max_length=15, null=True, blank=True)
     reference = models.CharField(max_length=15)
 
     def __int__(self):
@@ -49,12 +51,15 @@ class Donation(models.Model):
     last_name = models.CharField(max_length=25)
     email = models.EmailField(verbose_name='email address', max_length=255, default='temi@temitopesolesi.com.ng')
     status = models.CharField(max_length=15, null=True, blank=True)
-    transaction_date = models.CharField(max_length=35, null=True, blank=True)
-    telephone = PhoneNumberField(null=True, unique=True, help_text='E.g. +234 803 123 4567')
+    transaction_date = models.CharField(max_length=15, null=True, blank=True)
+    telephone = PhoneNumberField(help_text='E.g. +234 803 123 4567')
     reference = models.CharField(max_length=15)
 
     def __int__(self):
         return self.amount
+
+    def full_name(self):
+        return '{} {}'.format(self.first_name, self.last_name)
 
 
 class Comment(models.Model):

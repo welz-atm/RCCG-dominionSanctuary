@@ -1,38 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+{% load cloudinary %}
 
 
-<div class="container mb-2">
+<div class="container">
     {% if user.is_admin %}
-    <h4 class="text text-left text-info pb-4">
-        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal"
-        >Add Image
-        </button>
-    </h4>
+    <div class="text pb-4">
+        <a class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#exampleModal"
+        ><i class="bi bi-plus-lg"></i>
+        </a>
+    </div>
     {% endif %}
-    <div class="row ">
-        {% if photos %}
-        {% for photo in photos %}
-        <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
-            <img src="{{photo.image.url}}" alt="" class="img-thumbnail"/>
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="row justify-content-md-center">
-            <div class="col-md-6 mt-5">
+    <div class="container mb-2">
+        <div class="card">
+            <div class="card-body">
+                <div class="row ">
+                    {% if photos %}
+                    {% for photo in photos %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+                        {% cloudinary photo.image format="jpg" width=230 height=192 crop="pad" %}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="row justify-content-md-center">
+                        <div class="col-md-6 mt-5">
 
-                <img src="{% static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
+                            <img src="{% static 'assets/images/blog/404.jpg' %}" alt="" class="img-thumbnail"/>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        {% endif %}
     </div>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Picture</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

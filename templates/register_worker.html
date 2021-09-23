@@ -6,7 +6,7 @@
     <div class="row justify-content-md-center">
         {% include 'errors.html' %}
         <div class="col-md-6 mt-5">
-            <form method="post" action="{% url 'register' %}">
+            <form method="post" action="{% url 'register_worker' %}">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">First Name</label>
@@ -17,11 +17,11 @@
                     <input type="text" class="form-control" name="last_name" id="last_name" >
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail2" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="exampleInputEmail2" name="address" >
+                    <label for="exampleInputAddress2" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="exampleInputAddress2" name="address" >
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail2" class="form-label">Telephone E.g +2348021234567</label>
+                    <label for="telephone" class="form-label">Telephone E.g +2348021234567</label>
                     <input type="tel" class="form-control" id="telephone" name="telephone">
                 </div>
                 <div class="mb-3">
@@ -39,6 +39,14 @@
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control" id="exampleInputPassword2" name="password2">
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="pastor" name="is_pastor">
+                    <label class="form-check-label" for="pastor">Pastor</label>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="worker" name="is_worker">
+                    <label class="form-check-label" for="worker">Worker</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

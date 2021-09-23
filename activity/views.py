@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CommentForm, ServiceForm, PhotoForm, TitheForm, DonationForm
 from .models import Comment, Service, Photo, Tithe, Donation
+from django.db.models import Sum
+from django.http import JsonResponse
 from django.core.paginator import Paginator
 from authentication.decorators import worker_login_required, member_login_required, pastor_login_required
 from django.contrib.auth.decorators import login_required
@@ -9,7 +11,7 @@ from paystackapi.paystack import Paystack
 
 
 def home(request):
-    services = Service.objects.all().order_by('-date')[:6]
+    services = Service.objects.all().order_by('-date')[:9]
     if services.exists():
         context = {
             'services': services
@@ -22,19 +24,20 @@ def home(request):
 def search_view(request):
     search_query = request.GET.get('search_query')
     if search_query is not None:
-        qs = Service.objects.filter(name__contains=search_query).order_by('-date')
-        paginator = Paginator(qs, 10)
+        services = Service.objects.filter(name__contains=search_query)
+        paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
         services = paginator.get_page(page_number)
         context = {
-             'services': services
+            'services': services,
+            'search_query': search_query
+
           }
         return render(request, 'search.html', context)
 
 
-@worker_login_required()
 def create_service(request):
-    if request.method == 'POST' and request.user.is_worker:
+    if request.method == 'POST' and request.user.is_admin:
         form = ServiceForm(request.POST, request.FILES)
         if form.is_valid():
             service = form.save(commit=False)
@@ -49,13 +52,12 @@ def create_service(request):
     return render(request, 'add_service.html', context)
 
 
-@worker_login_required()
 def add_image_to_service(request, pk):
     try:
         service = Service.objects.get(pk=pk)
     except Service.DoesNotExist:
         return render(request, '404.html', {})
-    if request.method == 'POST' and request.user.is_worker:
+    if request.method == 'POST' and request.user.is_admin:
         photo_form = PhotoForm(request.POST, request.FILES)
         if photo_form.is_valid():
             photo = photo_form.save(commit=False)
@@ -102,9 +104,17 @@ def view_service(request, pk):
     return render(request, 'view_service.html', context)
 
 
+def view_praise_worship(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    context = {
+        'service': service,
+    }
+    return render(request, 'view_praise_worship.html', context)
+
+
 def all_services(request):
     services = Service.objects.all().order_by('-date')
-    paginator = Paginator(services, 10)
+    paginator = Paginator(services, 12)
     page_number = request.GET.get('page')
     services = paginator.get_page(page_number)
     context = {
@@ -125,9 +135,9 @@ def view_gallery(request, pk):
 
 @login_required()
 def view_per_sunday(request):
-    services = Service.objects.filter(name='Sunday Service').order_by('-date')
+    services = Service.objects.filter(name='Sunday Service').order_by('date')
     if services.exists():
-        paginator = Paginator(services, 10)
+        paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
         services = paginator.get_page(page_number)
         context = {
@@ -140,9 +150,9 @@ def view_per_sunday(request):
 
 @login_required()
 def view_per_sunday_special_service(request):
-    services = Service.objects.filter(name='Sunday Special Service').order_by('-date')
+    services = Service.objects.filter(name='Sunday Special Service').order_by('date')
     if services.exists():
-        paginator = Paginator(services, 10)
+        paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
         services = paginator.get_page(page_number)
         context = {
@@ -155,9 +165,9 @@ def view_per_sunday_special_service(request):
 
 @login_required()
 def view_per_sunday_thanksgiving_service(request):
-    services = Service.objects.filter(name='Sunday ThanksGiving Service').order_by('-date')
+    services = Service.objects.filter(name='Sunday ThanksGiving Service').order_by('date')
     if services.exists():
-        paginator = Paginator(services, 10)
+        paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
         services = paginator.get_page(page_number)
         context = {
@@ -170,9 +180,9 @@ def view_per_sunday_thanksgiving_service(request):
 
 @login_required()
 def view_per_tuesday(request):
-    services = Service.objects.filter(name='Tuesday Bible Study').order_by('-date')
+    services = Service.objects.filter(name='Tuesday Bible Study').order_by('date')
     if services.exists():
-        paginator = Paginator(services, 10)
+        paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
         services = paginator.get_page(page_number)
         context = {
@@ -185,9 +195,9 @@ def view_per_tuesday(request):
 
 @login_required()
 def view_per_thursday(request):
-    services = Service.objects.filter(name='Thursday Revival Service').order_by('-date')
+    services = Service.objects.filter(name='Thursday Revival Service').order_by('date')
     if services.exists():
-        paginator = Paginator(services, 10)
+        paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
         services = paginator.get_page(page_number)
         context = {
@@ -229,7 +239,7 @@ def pay_tithe(request):
             amount = tithe.amount * 100
             paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
             response = paystack.transaction.initialize(amount=amount, email=request.user.email,
-                                                       callback_url='https://rccgdom.herokuapp.com/confirm_tithe/')
+                                                       callback_url='http://localhost:8000/confirm_tithe/')
             url = response['data']['authorization_url']
             reference = response['data']['reference']
             tithe.user = request.user
@@ -250,7 +260,7 @@ def confirm_tithe(request):
     reference = tithe_url.split('=')[2]
     paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
     response = paystack.transaction.verify(reference=reference)
-    tithes = Tithe.objects.filter(user=request.user).order_by('-date')
+    tithes = Tithe.objects.filter(user=request.user).order_by('-date').select_related('user')
     tithe = tithes[0]
     tithe.transaction_date = response['data']['transaction_date']
     tithe.status = response['data']['status']
@@ -265,8 +275,8 @@ def confirm_tithe(request):
 
 
 def all_tithes(request):
-    tithes = Tithe.objects.all().order_by('-date')
-    paginator = Paginator(tithes, 10)
+    tithes = Tithe.objects.all().order_by('date')
+    paginator = Paginator(tithes, 12)
     page_number = request.GET.get('page')
     tithes = paginator.get_page(page_number)
     context = {
@@ -277,7 +287,7 @@ def all_tithes(request):
 
 def my_tithes(request):
     tithes = Tithe.objects.filter(user=request.user).order_by('date').select_related('user')
-    paginator = Paginator(tithes, 10)
+    paginator = Paginator(tithes, 12)
     page_number = request.GET.get('page')
     tithes = paginator.get_page(page_number)
     context = {
@@ -294,7 +304,7 @@ def create_donation(request):
             amount = donation.amount * 100
             paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
             response = paystack.transaction.initialize(amount=amount, email=donation.email,
-                                                       callback_url='https://rccgdom.herokuapp.com/confirm_donation/')
+                                                       callback_url='http://localhost:8000/confirm_donation/')
             url = response['data']['authorization_url']
             reference = response['data']['reference']
             donation.reference = reference
@@ -306,6 +316,30 @@ def create_donation(request):
         'form': form
     }
     return render(request, 'make_donation.html', context)
+
+
+def all_donations(request):
+    donations = Donation.objects.all().order_by('date')
+    paginator = Paginator(donations, 12)
+    page_number = request.GET.get('page')
+    donations = paginator.get_page(page_number)
+    context = {
+        'donations': donations
+    }
+    return render(request, 'donations.html', context)
+
+
+def individual_tithe_chart(request):
+    labels = []
+    data = []
+    tithes = Tithe.objects.values('user__email').annotate(tithe_total=Sum('amount'))
+    for info in tithes:
+        labels.append(info['user__email'])
+        data.append(info['tithe_total'])
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
 
 
 def confirm_donation(request):

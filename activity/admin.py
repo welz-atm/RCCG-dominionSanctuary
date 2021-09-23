@@ -27,7 +27,7 @@ class TitheAdmin(admin.ModelAdmin):
 
 
 class DonationAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'telephone', 'amount',)
+    list_display = ('first_name', 'last_name', 'telephone', 'amount', 'status')
 
 
 admin.site.register(Comment, CommentAdmin)

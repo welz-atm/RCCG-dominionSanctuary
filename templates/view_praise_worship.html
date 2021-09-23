@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <video controls width="620">
+
+            <source src="{{service.worship.url}}"
+                    type="video/mp4">
+
+            Sorry, your browser doesn't support embedded videos.
+        </video>
+
+        <div class="container mt-5">
+
+        </div>
+            <a href="#" class="btn btn-info mt-5" onclick="goBack()">Back</a>
+    </div>
+</div>
+
+{% endblock %}

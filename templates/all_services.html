@@ -4,36 +4,88 @@
 
 
 <div class="container mb-2">
-    <h4 class="text text-center text-info pb-4">All our Weekly Services</h4>
+    <h4 class="text text-center text-secondary pb-4">All Services</h4>
     <div class="row ">
         {% if services %}
         {% for service in services %}
         <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
-            <div class="card text-info h-100 p-4">
-                {% if service.name == 'Tuesday Bible Study' %}
-                <img src="{% static 'assets/images/blog/tuesday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% elif service.name == 'Thursday Revival Service' %}
-                <img src="{% static 'assets/images/blog/thursday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% elif service.name == 'Sunday ThanksGiving Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% elif service.name == 'Sunday Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% elif service.name == 'Sunday Special Service' %}
-                <img src="{% static 'assets/images/blog/sunday.jpg' %}" class="card-img-top" height="200" alt="{{service.name}}">
-				{% endif %}
+            {% if service.name == 'Tuesday Bible Study' %}
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">{{service.date}}</div>
                 <div class="card-body">
-                    <h5 class="text text-center">{{service.name}}</h5>
+                    <h5 class="card-title">{{service.name}}</h5>
+                    <div class="card-text">
+                        <a class="btn btn-primary" href="{% url 'view_service' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Service"><i
+                                class="bi bi-eye-fill"></i></a>
+                        <a class="btn btn-danger" href="{% url 'view_praise_worship' pk=service.pk %}" data-bs-toggle="tooltip"
+                           data-bs-placement="top" title="View Worship"><i
+                                class="bi bi-eye-fill"></i></a>
+
+                        <a class="btn btn-success" href="{% url 'view_gallery' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Gallery"><i
+                                class="bi bi-eye-fill"></i></a>
+                    </div>
                 </div>
-                <ul class="list-group ">
-                    <li class="list-group-item">
-                        <h4>{{service.date}}</h4>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'view_service' pk=service.pk %}">View Service</a>
-                    </li>
-                    <li class="list-group-item"><a href="{% url 'view_gallery' pk=service.pk %}">View Gallery</a></li>
-                </ul>
             </div>
+            {% elif service.name == 'Thursday Revival Service' %}
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">{{service.date}}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{service.name}}</h5>
+                    <div class="card-text">
+                        <a class="btn btn-primary" href="{% url 'view_service' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Service"><i
+                                class="bi bi-eye-fill"></i></a>
+                        <a class="btn btn-danger" href="{% url 'view_praise_worship' pk=service.pk %}" data-bs-toggle="tooltip"
+                           data-bs-placement="top" title="View Worship"><i
+                                class="bi bi-eye-fill"></i></a>
+
+                        <a class="btn btn-warning" href="{% url 'view_gallery' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Gallery"><i
+                                class="bi bi-eye-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% elif service.name == 'Sunday ThanksGiving Service' %}
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">{{service.date}}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{service.name}}</h5>
+                    <div class="card-text">
+                        <a class="btn btn-primary" href="{% url 'view_service' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Service"><i
+                                class="bi bi-eye-fill"></i></a>
+                        <a class="btn btn-warning" href="{% url 'view_praise_worship' pk=service.pk %}" data-bs-toggle="tooltip"
+                           data-bs-placement="top" title="View Worship"><i
+                                class="bi bi-eye-fill"></i></a>
+
+                        <a class="btn btn-success" href="{% url 'view_gallery' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Gallery"><i
+                                class="bi bi-eye-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% elif service.name == 'Sunday Service' %}
+            <div class="card text-dark bg-warning mb-3">
+                <div class="card-header">{{service.date}}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{service.name}}</h5>
+                    <div class="card-text">
+                        <a class="btn btn-primary" href="{% url 'view_service' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Service"><i
+                                class="bi bi-eye-fill"></i></a>
+                        <a class="btn btn-danger" href="{% url 'view_praise_worship' pk=service.pk %}" data-bs-toggle="tooltip"
+                           data-bs-placement="top" title="View Service"><i
+                                class="bi bi-eye-fill"></i></a>
+
+                        <a class="btn btn-success" href="{% url 'view_gallery' pk=service.pk %}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Gallery"><i
+                                class="bi bi-eye-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+            {%endif %}
         </div>
         {% endfor %}
         {% else %}

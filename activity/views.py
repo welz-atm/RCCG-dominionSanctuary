@@ -239,7 +239,7 @@ def pay_tithe(request):
             amount = tithe.amount * 100
             paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
             response = paystack.transaction.initialize(amount=amount, email=request.user.email,
-                                                       callback_url='http://localhost:8000/confirm_tithe/')
+                                                       callback_url='https://rccgdom.herokuapp.com/confirm_tithe/')
             url = response['data']['authorization_url']
             reference = response['data']['reference']
             tithe.user = request.user
@@ -304,7 +304,7 @@ def create_donation(request):
             amount = donation.amount * 100
             paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
             response = paystack.transaction.initialize(amount=amount, email=donation.email,
-                                                       callback_url='http://localhost:8000/confirm_donation/')
+                                                       callback_url='https://rccgdom.herokuapp.com/confirm_donation/')
             url = response['data']['authorization_url']
             reference = response['data']['reference']
             donation.reference = reference

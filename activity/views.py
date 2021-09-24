@@ -53,8 +53,8 @@ def create_service(request):
         if form.is_valid():
             service = form.save(commit=False)
             service.user = request.user
-            with open('service.video', 'r') as file:
-                cloudinary.uploader.upload_large(file, resource_type='video', chunk_size=6000000)
+            # with open('service.video', 'r') as file:
+            cloudinary.uploader.upload_large(service.video, resource_type='video', chunk_size=6000000)
             service.save()
             return redirect('all_services')
     else:

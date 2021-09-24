@@ -7,7 +7,6 @@
         <div class="col-md-6 mt-5">
 
             <form method="post" action="{% url 'create_service' %}" enctype="multipart/form-data">
-                {% include 'errors.html' %}
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="date" class="form-label">Service Date</label>

@@ -8,6 +8,7 @@ from authentication.decorators import worker_login_required, member_login_requir
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from paystackapi.paystack import Paystack
+import os
 import cloudinary
 import cloudinary.api
 import cloudinary.uploader

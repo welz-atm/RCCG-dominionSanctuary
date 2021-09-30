@@ -10,8 +10,6 @@ from django.conf import settings
 from paystackapi.paystack import Paystack
 import os
 import cloudinary
-import cloudinary.api
-import cloudinary.uploader
 
 cloudinary.config(
     cloud_name=os.getenv('CLOUD_NAME'),
@@ -53,8 +51,8 @@ def create_service(request):
         if form.is_valid():
             service = form.save(commit=False)
             service.user = request.user
-            # with open('service.video', 'r') as file:
-            cloudinary.uploader.upload_large(service.video, resource_type='video', chunk_size=6000000)
+            response = cloudinary.uploader.upload_large(request.FILES['video'], resource_type='video')
+            service.video = response['secure_url']
             service.save()
             return redirect('all_services')
     else:

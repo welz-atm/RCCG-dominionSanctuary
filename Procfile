@@ -1,1 +1,1 @@
-web: gunicorn dominion.wsgi --timeout 180 --keep-alive 5 --log-level debug
+web: gunicorn dominion.wsgi --timeout 300 --keep-alive 5 --log-level debug

@@ -336,7 +336,7 @@ def create_donation(request):
 @login_required()
 def all_donations(request):
     if request.user.is_admin:
-        donations = Donation.objects.all().order_by('date')
+        donations = Donation.objects.all().order_by('-date')
         paginator = Paginator(donations, 12)
         page_number = request.GET.get('page')
         donations = paginator.get_page(page_number)

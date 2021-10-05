@@ -366,7 +366,7 @@ def confirm_donation(request):
     reference = donation_url.split('=')[2]
     paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
     response = paystack.transaction.verify(reference=reference)
-    donation = Tithe.objects.get(reference=reference)
+    donation = Donation.objects.get(reference=reference)
     donation.transaction_date = response['data']['transaction_date']
     donation.status = response['data']['status']
     donation.save()

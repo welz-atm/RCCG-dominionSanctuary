@@ -51,7 +51,7 @@ def create_service(request):
         if form.is_valid():
             service = form.save(commit=False)
             service.user = request.user
-            response = cloudinary.uploader.upload_large(request.FILES['video'], resource_type='video')
+            response = cloudinary.uploader.upload_large(request.FILES['video'], resource_type='video', quality='auto:eco')
             service.video = response['secure_url']
             service.save()
             return redirect('all_services')
@@ -285,17 +285,21 @@ def confirm_tithe(request):
     return render(request, 'tithes.html', context)
 
 
+@login_required()
 def all_tithes(request):
-    tithes = Tithe.objects.all().order_by('date')
-    paginator = Paginator(tithes, 12)
-    page_number = request.GET.get('page')
-    tithes = paginator.get_page(page_number)
-    context = {
-        'tithes': tithes
-    }
-    return render(request, 'tithes.html', context)
+    if request.user.is_admin:
+        tithes = Tithe.objects.all().order_by('date')
+        paginator = Paginator(tithes, 12)
+        page_number = request.GET.get('page')
+        tithes = paginator.get_page(page_number)
+        context = {
+            'tithes': tithes
+        }
+        return render(request, 'tithes.html', context)
+    else:
+        return render(request, '404.html', {})
 
-
+@login_required()
 def my_tithes(request):
     tithes = Tithe.objects.filter(user=request.user).order_by('date').select_related('user')
     paginator = Paginator(tithes, 12)
@@ -329,15 +333,19 @@ def create_donation(request):
     return render(request, 'make_donation.html', context)
 
 
+@login_required()
 def all_donations(request):
-    donations = Donation.objects.all().order_by('date')
-    paginator = Paginator(donations, 12)
-    page_number = request.GET.get('page')
-    donations = paginator.get_page(page_number)
-    context = {
-        'donations': donations
-    }
-    return render(request, 'donations.html', context)
+    if request.user.is_admin:
+        donations = Donation.objects.all().order_by('date')
+        paginator = Paginator(donations, 12)
+        page_number = request.GET.get('page')
+        donations = paginator.get_page(page_number)
+        context = {
+            'donations': donations
+        }
+        return render(request, 'donations.html', context)
+    else:
+        return render(request, '404.html', {})
 
 
 def individual_tithe_chart(request):
@@ -354,4 +362,12 @@ def individual_tithe_chart(request):
 
 
 def confirm_donation(request):
+    donation_url = request.build_absolute_uri()
+    reference = donation_url.split('=')[2]
+    paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
+    response = paystack.transaction.verify(reference=reference)
+    donation = Tithe.objects.get(reference=reference)
+    donation.transaction_date = response['data']['transaction_date']
+    donation.status = response['data']['status']
+    donation.save()
     return render(request, 'success.html', {})

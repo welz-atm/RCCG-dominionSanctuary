@@ -146,7 +146,7 @@ def view_gallery(request, pk):
 
 @login_required()
 def view_per_sunday(request):
-    services = Service.objects.filter(name='Sunday Service').order_by('date')
+    services = Service.objects.filter(name='Sunday Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
@@ -161,7 +161,7 @@ def view_per_sunday(request):
 
 @login_required()
 def view_per_sunday_special_service(request):
-    services = Service.objects.filter(name='Sunday Special Service').order_by('date')
+    services = Service.objects.filter(name='Sunday Special Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
@@ -176,7 +176,7 @@ def view_per_sunday_special_service(request):
 
 @login_required()
 def view_per_sunday_thanksgiving_service(request):
-    services = Service.objects.filter(name='Sunday ThanksGiving Service').order_by('date')
+    services = Service.objects.filter(name='Sunday ThanksGiving Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
@@ -191,7 +191,7 @@ def view_per_sunday_thanksgiving_service(request):
 
 @login_required()
 def view_per_tuesday(request):
-    services = Service.objects.filter(name='Tuesday Bible Study').order_by('date')
+    services = Service.objects.filter(name='Tuesday Bible Study').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
@@ -206,7 +206,7 @@ def view_per_tuesday(request):
 
 @login_required()
 def view_per_thursday(request):
-    services = Service.objects.filter(name='Thursday Revival Service').order_by('date')
+    services = Service.objects.filter(name='Thursday Revival Service').order_by('-date')
     if services.exists():
         paginator = Paginator(services, 12)
         page_number = request.GET.get('page')
@@ -288,7 +288,7 @@ def confirm_tithe(request):
 @login_required()
 def all_tithes(request):
     if request.user.is_admin:
-        tithes = Tithe.objects.all().order_by('date')
+        tithes = Tithe.objects.all().order_by('-date').select_related('user')
         paginator = Paginator(tithes, 12)
         page_number = request.GET.get('page')
         tithes = paginator.get_page(page_number)
@@ -301,7 +301,7 @@ def all_tithes(request):
 
 @login_required()
 def my_tithes(request):
-    tithes = Tithe.objects.filter(user=request.user).order_by('date').select_related('user')
+    tithes = Tithe.objects.filter(user=request.user).order_by('-date').select_related('user')
     paginator = Paginator(tithes, 12)
     page_number = request.GET.get('page')
     tithes = paginator.get_page(page_number)
